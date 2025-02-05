@@ -1,0 +1,8 @@
+code-audit-tool/
+├── frontend/          # Vue.js前端
+├── backend/           # Python FastAPI后端
+├── core/             # 核心审计逻辑
+│   ├── analyzers/    # 各种分析器
+│   ├── parsers/      # 代码解析器
+│   └── ai/           # AI分析模块
+└── docker/           # Docker配置文件 
