@@ -1,6 +1,6 @@
 # Mirror Flowers (镜花)
 
-![image-20250205181045094](C:\Users\lu0r3\AppData\Roaming\Typora\typora-user-images\image-20250205181045094.png)
+![image-20250205181045094](https://raw.githubusercontent.com/Ky0toFu/Mirror-Flowers/refs/heads/main/Mirror%20Flowers/Mirror%20Flowers.png)
 
 基于 AI 的代码安全审计工具，支持多种编程语言的代码分析，可以帮助开发者快速发现代码中的潜在安全漏洞。支持DeepSeek-R1，ChatGPT-4o等多种大模型。
 
@@ -42,8 +42,8 @@ SiliconFlow(硅基流动)注册可免费领取14元使用额度，可通过SMS�
 
 1. 克隆项目
 ```bash
-git clone https://github.com/yourusername/code-audit-tool.git
-cd code-audit-tool
+git clone https://github.com/Ky0toFu/Mirror-Flowers.git
+cd Mirror Flowers
 ```
 
 2. 安装依赖
