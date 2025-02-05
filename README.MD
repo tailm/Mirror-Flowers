@@ -42,8 +42,8 @@ SiliconFlow(硅基流动)注册可免费领取14元使用额度，可通过SMS�
 
 1. 克隆项目
 ```bash
-git clone https://github.com/yourusername/code-audit-tool.git
-cd code-audit-tool
+git clone https://github.com/Ky0toFu/Mirror-Flowers.git
+cd Mirror Flowers
 ```
 
 2. 安装依赖
