@@ -1,6 +1,6 @@
 # Mirror Flowers (镜花)
 
-![image-20250205181045094](https://raw.githubusercontent.com/Ky0toFu/Mirror-Flowers/refs/heads/main/Mirror%20Flowers/Mirror%20Flowers.png)
+![image-20250205181045094](https://raw.githubusercontent.com/Ky0toFu/Mirror-Flowers/refs/heads/main/Mirror%20Flowers.png)
 
 MirrorFlower(镜花)是一款基于 AI 的代码安全审计工具，支持多种编程语言的代码分析，可以帮助开发者快速发现代码中的潜在安全漏洞。支持DeepSeek-R1，ChatGPT-4o等多种大模型。
 
