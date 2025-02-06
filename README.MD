@@ -7,7 +7,7 @@
 ## 支持的API接口
 
 FREEGPTAPI：https://github.com/popjane/free_chatgpt_api
-SiliconFlow(硅基流动)：https://siliconflow.cn/
+SiliconFlow(硅基流动)：https://cloud.siliconflow.cn/i/JzMCyiJ3
 
 如需要使用GPT大模型则使用FREEGPTAPI，使用DeepSeek-R1大模型则使用SiliconFlow API。
 
