@@ -143,6 +143,11 @@ OPENAI_MODEL=your_preferred_model
 uvicorn backend.app:app --reload
 ```
 
+5. 访问Mirror-Flower
+```bash
+http://localhost:8000/ui
+```
+
 ## 注意事项
 
 1. 文件大小限制：10MB
