@@ -4,6 +4,19 @@
 
 MirrorFlower(镜花)是一款基于 AI 的代码安全审计工具，支持多种编程语言的代码分析，可以帮助开发者快速发现代码中的潜在安全漏洞。支持DeepSeek-R1，ChatGPT-4o等多种大模型。
 
+## 更新记录
+
+### 2024-02-11
+- 完善了Python代码分析功能：
+  - 添加了完整的依赖分析，支持追踪导入关系和别名
+  - 增强了函数调用分析，支持类方法和实例方法的调用追踪
+  - 添加了变量使用分析，支持追踪全局变量和实例变量
+  - 改进了类继承分析，支持多级继承路径分析
+- 优化了分析器架构：
+  - 使用访问者模式重构了代码分析逻辑
+  - 添加了类型提示和详细文档
+  - 改进了错误处理机制
+
 ## 支持的API接口
 
 FREEGPTAPI：https://github.com/popjane/free_chatgpt_api
@@ -141,11 +154,6 @@ OPENAI_MODEL=your_preferred_model
 4. 启动服务
 ```bash
 uvicorn backend.app:app --reload
-```
-
-5. 访问Mirror-Flower
-```bash
-http://localhost:8000/ui
 ```
 
 ## 注意事项
