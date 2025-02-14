@@ -272,9 +272,6 @@ http://localhost:8000/ui
 3. 结果验证：建议结合人工审查
 4. API配置问题：如果提示"API配置更新错误"或"不存在某个模型"，请检查API Base URL格式，尝试在URL后添加/v1或删除/v1（例如：https://api.example.com 或 https://api.example.com/v1）
 
-## 联系方式
-
-如有问题或建议，请通过 Issue 与我联系。
 
 ## 项目结构
 ```
@@ -363,3 +360,7 @@ pytest
 
 ### API 文档
 启动服务后访问：http://127.0.0.1:8000/docs
+
+## 联系方式
+
+如有问题或建议，请通过 Issue 与我联系。
