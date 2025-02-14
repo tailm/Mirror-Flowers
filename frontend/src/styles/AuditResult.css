@@ -1,0 +1,140 @@
+.ai-analysis {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.ai-analysis h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.ai-analysis .section {
+  margin-bottom: 20px;
+}
+
+.ai-analysis h4 {
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+.ai-analysis ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ai-analysis li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.ai-analysis li:before {
+  content: "•";
+  color: #3498db;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.ai-analysis.error {
+  background-color: #fff3f3;
+  border: 1px solid #ffcdd2;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 4px;
+}
+
+.ai-analysis.error h3 {
+  color: #d32f2f;
+}
+
+.ai-analysis.error pre {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.ai-analysis .debug-info {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.ai-analysis .debug-info pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 12px;
+  margin: 0;
+}
+
+.audit-result {
+  padding: 20px;
+}
+
+.audit-summary {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.audit-summary h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.audit-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.audit-summary li {
+  margin-bottom: 10px;
+}
+
+.suspicious-file {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.suspicious-file h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.issue {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.severity {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.severity.high {
+  background-color: #dc3545;
+  color: white;
+}
+
+.severity.medium {
+  background-color: #ffc107;
+  color: black;
+}
+
+.severity.low {
+  background-color: #28a745;
+  color: white;
+} 

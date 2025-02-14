@@ -1,0 +1,18 @@
+rules:
+  php:
+    dangerous_functions:
+      - name: eval
+        pattern: 'eval\s*\('
+        description: '使用eval()函数可能导致代码注入'
+        severity: high
+        category: code_injection
+        cwe: CWE-95
+        mitigation: '避免使用eval()，使用更安全的替代方案'
+        
+    sql_injection:
+      - pattern: '\$_(?:GET|POST|REQUEST)\s*\[.*?\].*?(?:SELECT|INSERT|UPDATE|DELETE)'
+        description: '直接使用用户输入构造SQL语句'
+        severity: high
+        category: sql_injection
+        cwe: CWE-89
+        mitigation: '使用参数化查询或ORM' 

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <link href="/static/styles.css" rel="stylesheet">
     <style>
         :root {
             --bg-color: #ffffff;
@@ -272,6 +273,17 @@
                     </select>
                 </div>
                 
+                <div class="mb-3">
+                    <label for="projectType" class="form-label">项目类型</label>
+                    <select class="form-control" id="projectType">
+                        <option value="auto">自动检测</option>
+                        <option value="php">PHP项目</option>
+                        <option value="python">Python项目</option>
+                        <option value="java">Java项目</option>
+                        <option value="javascript">JavaScript项目</option>
+                    </select>
+                </div>
+                
                 <div class="upload-container">
                     <!-- 单文件上传 -->
                     <div id="singleFileUpload" class="upload-section">
@@ -516,14 +528,38 @@
             container.innerHTML = '';
             
             if (containerId === 'folderFileList') {
-                // 对于文件夹上传，使用新的处理逻辑
-                const supportedExtensions = ['.php', '.java', '.js', '.py'];
+                // 获取项目类型
+                const projectType = document.getElementById('projectType').value;
+                
+                // 根据项目类型定义支持的文件类型
+                const extensionMap = {
+                    'php': ['.php'],
+                    'python': ['.py', '.pyw'],
+                    'java': ['.java', '.jsp'],
+                    'javascript': ['.js', '.jsx', '.ts', '.tsx'],
+                    'auto': ['.php', '.java', '.js', '.py', '.jsx', '.ts', '.tsx', '.pyw', '.jsp']
+                };
+                
+                // 获取主要文件类型和辅助文件类型
+                const primaryExtensions = extensionMap[projectType] || extensionMap.auto;
+                const auxiliaryExtensions = ['.html', '.css', '.json', '.xml', '.yml', '.yaml'];
+                
+                // 分类文件
                 const validFiles = Array.from(files).filter(file => {
                     const ext = '.' + file.name.split('.').pop().toLowerCase();
-                    return supportedExtensions.includes(ext);
+                    return primaryExtensions.includes(ext);
                 });
                 
-                showProcessingInfo(validFiles, files.length - validFiles.length);
+                const auxiliaryFiles = Array.from(files).filter(file => {
+                    const ext = '.' + file.name.split('.').pop().toLowerCase();
+                    return auxiliaryExtensions.includes(ext);
+                });
+                
+                // 计算跳过的文件数
+                const skippedCount = files.length - validFiles.length - auxiliaryFiles.length;
+                
+                // 显示处理信息
+                showProcessingInfo(validFiles, auxiliaryFiles, skippedCount);
                 
                 // 只有存在有效文件时才启用审计按钮
                 document.getElementById('auditBtn').disabled = validFiles.length === 0;
@@ -562,32 +598,29 @@
 
         // 修改审计函数
         async function startAudit() {
+            showLoading();
             const uploadType = document.getElementById('uploadType').value;
-            let files;
             
             try {
-                showLoading();
-                
-                switch(uploadType) {
-                    case 'single':
-                        files = document.getElementById('codeFile').files;
-                        if (files.length > 0) {
-                            await auditSingleFile(files[0]);
-                        } else {
-                            throw new Error('请选择要审计的文件');
-                        }
-                        break;
-                    case 'folder':
-                        files = document.getElementById('codeFolder').files;
-                        if (files.length > 0) {
-                            await auditFolder(files);
-                        } else {
-                            throw new Error('请选择要审计的文件夹');
-                        }
-                        break;
+                let result;
+                if (uploadType === 'single') {
+                    const file = document.getElementById('codeFile').files[0];
+                    result = await auditSingleFile(file);
+                } else {
+                    const files = document.getElementById('codeFolder').files;
+                    result = await auditFolder(files);
                 }
+                
+                // 确保结果存在且格式正确
+                if (!result || typeof result !== 'object') {
+                    throw new Error('无效的响应数据');
+                }
+                
+                // 显示结果
+                displayAuditResults(result);
             } catch (error) {
-                alert(error.message);
+                console.error('审计错误:', error);
+                alert('审计失败: ' + error.message);
             } finally {
                 hideLoading();
             }
@@ -614,49 +647,69 @@
                 }
                 
                 const result = await response.json();
-                displayResults([{ file: file.name, result }]);
+                return result;
             } catch (error) {
-                alert('审计失败: ' + error.message);
+                throw new Error('审计失败: ' + error.message);
             }
         }
 
         // 修改 auditFolder 函数
         async function auditFolder(files) {
             try {
-                // 过滤支持的文件类型
-                const supportedExtensions = ['.php', '.java', '.js', '.py'];
+                const projectType = document.getElementById('projectType').value;
+                
+                // 根据项目类型定义支持的文件类型
+                const extensionMap = {
+                    'php': ['.php'],
+                    'python': ['.py', '.pyw'],
+                    'java': ['.java', '.jsp'],
+                    'javascript': ['.js', '.jsx', '.ts', '.tsx'],
+                    'auto': ['.php', '.java', '.js', '.py', '.jsx', '.ts', '.tsx', '.pyw', '.jsp']
+                };
+                
+                // 获取主要文件类型和可选的辅助文件类型
+                const primaryExtensions = extensionMap[projectType] || extensionMap.auto;
+                const auxiliaryExtensions = ['.html', '.css', '.json', '.xml', '.yml', '.yaml'];
+                
+                // 分类文件
                 const validFiles = Array.from(files).filter(file => {
                     const ext = '.' + file.name.split('.').pop().toLowerCase();
-                    return supportedExtensions.includes(ext);
+                    return primaryExtensions.includes(ext);
+                });
+                
+                const auxiliaryFiles = Array.from(files).filter(file => {
+                    const ext = '.' + file.name.split('.').pop().toLowerCase();
+                    return auxiliaryExtensions.includes(ext);
                 });
 
                 if (validFiles.length === 0) {
-                    throw new Error('未找到支持的源代码文件（支持 .php, .java, .js, .py）');
+                    throw new Error(`未找到支持的源代码文件（支持 ${primaryExtensions.join(', ')}）`);
                 }
 
-                // 显示初始进度 - 压缩阶段
+                // 显示初始进度
                 updateProgress(0, validFiles.length, '准备文件...');
                 
-                // 创建ZIP文件，只包含支持的文件
+                // 创建ZIP文件
                 const zip = new JSZip();
-                let totalSize = 0;
-                const maxSize = 10 * 1024 * 1024; // 10MB 限制
-
+                
+                // 添加主要源代码文件
                 for (let i = 0; i < validFiles.length; i++) {
                     const file = validFiles[i];
-                    totalSize += file.size;
-                    if (totalSize > maxSize) {
-                        throw new Error('项目文件总大小超过限制（10MB）');
-                    }
                     const relativePath = file.webkitRelativePath || file.name;
                     zip.file(relativePath, file);
-                    
-                    // 更新压缩进度
                     updateProgress(i + 1, validFiles.length, `正在处理: ${relativePath}`);
                 }
+                
+                // 可选：添加辅助文件（配置文件等）
+                if (auxiliaryFiles.length > 0) {
+                    auxiliaryFiles.forEach(file => {
+                        const relativePath = file.webkitRelativePath || file.name;
+                        zip.file(relativePath, file);
+                    });
+                }
 
-                // 显示处理信息
-                showProcessingInfo(validFiles, files.length - validFiles.length);
+                // 显示处理信息，包括主要文件和辅助文件的统计
+                showProcessingInfo(validFiles, auxiliaryFiles, files.length - validFiles.length - auxiliaryFiles.length);
                 
                 // 更新进度显示为压缩阶段
                 updateProgress(validFiles.length, validFiles.length, '正在压缩文件...');
@@ -688,14 +741,18 @@
                 
                 const result = await response.json();
                 
-                // 分析完成
-                document.getElementById('loadingText').textContent = '分析完成';
-                document.getElementById('currentFile').textContent = '';
-                document.getElementById('progressBar').style.width = '100%';
+                // 验证响应数据结构
+                if (!result || typeof result !== 'object') {
+                    throw new Error('无效的响应数据');
+                }
                 
-                displayProjectResults(result.results);
+                if (!result.status || !Array.isArray(result.suspicious_files)) {
+                    throw new Error('响应数据格式错误');
+                }
+                
+                return result;
             } catch (error) {
-                alert('审计失败: ' + error.message);
+                throw new Error('审计失败: ' + error.message);
             }
         }
 
@@ -728,18 +785,21 @@
             loadingText.textContent = `处理进度：${processed}/${total}`;
         }
 
-        // 添加显示处理信息的函数
-        function showProcessingInfo(validFiles, skippedCount) {
+        // 更新显示处理信息的函数
+        function showProcessingInfo(validFiles, auxiliaryFiles, skippedCount) {
             const container = document.getElementById('folderFileList');
+            const projectType = document.getElementById('projectType').value;
+            
             container.innerHTML = `
                 <div class="alert alert-info">
                     <h6 class="mb-2">文件处理信息：</h6>
-                    <p class="mb-1">待审计文件数：${validFiles.length}</p>
+                    <p class="mb-1">待审计主要文件数：${validFiles.length}</p>
+                    <p class="mb-1">相关辅助文件数：${auxiliaryFiles.length}</p>
                     <p class="mb-1">已跳过文件数：${skippedCount}</p>
-                    <p class="mb-0">支持的文件类型：.php, .java, .js, .py</p>
+                    <p class="mb-0">项目类型：${projectType === 'auto' ? '自动检测' : projectType.toUpperCase()}</p>
                 </div>
                 <div class="mt-3">
-                    <h6>待审计文件列表：</h6>
+                    <h6>待审计主要文件：</h6>
                     ${validFiles.map(file => `
                         <div class="file-list-item">
                             <i class="bi bi-file-earmark-code"></i>
@@ -748,132 +808,205 @@
                         </div>
                     `).join('')}
                 </div>
+                ${auxiliaryFiles.length > 0 ? `
+                    <div class="mt-3">
+                        <h6>相关辅助文件：</h6>
+                        ${auxiliaryFiles.map(file => `
+                            <div class="file-list-item text-muted">
+                                <i class="bi bi-file-earmark"></i>
+                                ${file.webkitRelativePath || file.name}
+                                <small>(${formatFileSize(file.size)})</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
             `;
         }
 
-        function displayResults(results) {
+        function displayAuditResults(result) {
             const resultsDiv = document.getElementById('results');
-            const accordion = document.getElementById('auditResults');
-            accordion.innerHTML = '';
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '';
+
+            // 显示总体摘要，添加风险等级对应的颜色
+            const summaryCard = document.createElement('div');
+            summaryCard.className = 'card mb-4';
+            const riskLevelColor = result.summary.risk_level === 'high' ? 'danger' : 
+                                  result.summary.risk_level === 'medium' ? 'warning' : 'info';
             
-            results.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'card mb-3';
-                const headerId = `heading${index}`;
-                const collapseId = `collapse${index}`;
-                
-                card.innerHTML = `
-                    <div class="card-header" id="${headerId}">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link w-100 text-start" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#${collapseId}"
-                                    aria-expanded="false" aria-controls="${collapseId}">
-                                ${item.file}
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="${collapseId}" class="collapse" 
-                         aria-labelledby="${headerId}" data-bs-parent="#auditResults">
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <h6 class="mb-3">第一轮分析</h6>
-                                <pre class="bg-light p-3 rounded">${item.result.first_analysis}</pre>
-                            </div>
-                            <div>
-                                <h6 class="mb-3">第二轮验证</h6>
-                                <pre class="bg-light p-3 rounded">${item.result.second_analysis}</pre>
-                            </div>
+            summaryCard.innerHTML = `
+                <div class="card-header bg-${riskLevelColor} text-white">
+                    <h5 class="mb-0">审计摘要</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><i class="bi bi-check-circle-fill text-${result.status === 'success' ? 'success' : 'danger'}"></i> 
+                               状态: ${result.status || '未知'}</p>
+                            ${result.message ? `<p><i class="bi bi-info-circle-fill"></i> 消息: ${result.message}</p>` : ''}
+                        </div>
+                        <div class="col-md-6">
+                            <p><i class="bi bi-file-earmark-text"></i> 发现可疑文件数: ${result.suspicious_files?.length || 0}</p>
+                            ${result.summary ? `
+                                <p><i class="bi bi-exclamation-triangle-fill text-${riskLevelColor}"></i> 
+                                   总问题数: ${result.summary.total_issues}</p>
+                                <p><i class="bi bi-shield-fill-exclamation"></i> 
+                                   风险等级: <span class="badge bg-${riskLevelColor}">${result.summary.risk_level.toUpperCase()}</span></p>
+                            ` : ''}
                         </div>
                     </div>
-                `;
-                accordion.appendChild(card);
-            });
-            
-            resultsDiv.style.display = 'block';
-            
-            // 自动展开第一个结果
-            const firstCollapse = accordion.querySelector('.collapse');
-            if (firstCollapse) {
-                new bootstrap.Collapse(firstCollapse, { show: true });
+                </div>
+            `;
+            resultsDiv.appendChild(summaryCard);
+
+            // 显示每个可疑文件的详细信息
+            if (result.suspicious_files && Array.isArray(result.suspicious_files)) {
+                const accordion = document.createElement('div');
+                accordion.className = 'accordion mb-4';
+                accordion.id = 'filesAccordion';
+
+                result.suspicious_files.forEach((file, index) => {
+                    const fileCard = document.createElement('div');
+                    fileCard.className = 'accordion-item';
+                    
+                    // 安全地访问 AI 验证结果
+                    const aiVerification = result.ai_verification?.[file.file_path];
+                    const hasHighSeverity = file.issues.some(issue => issue.severity === 'high');
+                    
+                    fileCard.innerHTML = `
+                        <h2 class="accordion-header">
+                            <button class="accordion-button ${hasHighSeverity ? 'text-danger' : ''}" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                                <i class="bi bi-file-earmark-code me-2"></i>
+                                ${file.file_path.split('\\').pop()} 
+                                ${hasHighSeverity ? '<span class="badge bg-danger ms-2">高危</span>' : ''}
+                            </button>
+                        </h2>
+                        <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" 
+                             data-bs-parent="#filesAccordion">
+                            <div class="accordion-body">
+                                <div class="mb-3">
+                                    <h6><i class="bi bi-bug"></i> 发现的问题:</h6>
+                                    <div class="list-group">
+                                        ${file.issues.map(issue => `
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-${issue.severity === 'high' ? 'danger' : 
+                                                          issue.severity === 'medium' ? 'warning' : 'info'} me-2">
+                                                        ${issue.severity.toUpperCase()}
+                                                    </span>
+                                                    <span class="flex-grow-1 ms-2">${issue.description}</span>
+                                                </div>
+                                                ${issue.line ? `
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-code-slash"></i> 行号: ${issue.line}
+                                                    </small>
+                                                ` : ''}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                
+                                ${aiVerification?.ai_analysis?.analysis?.raw_text ? (() => {
+                                    try {
+                                        const analysis = JSON.parse(aiVerification.ai_analysis.analysis.raw_text);
+                                        return `
+                                            <div class="mt-4">
+                                                <h6><i class="bi bi-robot"></i> AI 分析建议:</h6>
+                                                
+                                                <!-- 漏洞确认 -->
+                                                <div class="alert alert-info">
+                                                    <h6 class="alert-heading">
+                                                        <i class="bi bi-shield-fill"></i> 漏洞确认
+                                                    </h6>
+                                                    <hr>
+                                                    <p>${analysis.vulnerability_confirmation.dangerous_function.evidence}</p>
+                                                    <p><strong>是否误报:</strong> 
+                                                        ${analysis.vulnerability_confirmation.dangerous_function.is_false_positive ? '是' : '否'}
+                                                    </p>
+                                                </div>
+
+                                                <!-- 影响分析 -->
+                                                <div class="alert alert-warning">
+                                                    <h6 class="alert-heading">
+                                                        <i class="bi bi-exclamation-triangle"></i> 影响分析
+                                                    </h6>
+                                                    <hr>
+                                                    <p><strong>严重程度:</strong> ${analysis.impact_analysis.dangerous_function.severity}</p>
+                                                    <p><strong>利用条件:</strong> ${analysis.impact_analysis.dangerous_function.exploit_conditions}</p>
+                                                    <p><strong>影响范围:</strong> ${analysis.impact_analysis.dangerous_function.impact_scope}</p>
+                                                </div>
+
+                                                <!-- 修复建议 -->
+                                                <div class="alert alert-success">
+                                                    <h6 class="alert-heading">
+                                                        <i class="bi bi-tools"></i> 修复建议
+                                                    </h6>
+                                                    <hr>
+                                                    <p><strong>代码级修复:</strong> ${analysis.remediation_suggestions.dangerous_function.code_level_fix}</p>
+                                                    <p><strong>安全编码实践:</strong> ${analysis.remediation_suggestions.dangerous_function.secure_coding_practices}</p>
+                                                    <p><strong>安全配置建议:</strong> ${analysis.remediation_suggestions.dangerous_function.security_configuration_suggestions}</p>
+                                                </div>
+
+                                                <!-- 关联分析 -->
+                                                <div class="alert alert-info">
+                                                    <h6 class="alert-heading">
+                                                        <i class="bi bi-diagram-3"></i> 关联分析
+                                                    </h6>
+                                                    <hr>
+                                                    <p><strong>关联性:</strong> ${analysis.correlation_analysis.dangerous_function.association}</p>
+                                                    <p><strong>组合利用:</strong> ${analysis.correlation_analysis.dangerous_function.exploit_combination}</p>
+                                                    <p><strong>整体修复策略:</strong> ${analysis.correlation_analysis.dangerous_function.overall_remediation_strategy}</p>
+                                                </div>
+                                            </div>
+                                        `;
+                                    } catch (e) {
+                                        console.error('解析 AI 分析结果失败:', e);
+                                        return `
+                                            <div class="alert alert-danger">
+                                                <h6 class="alert-heading">AI 分析结果解析失败</h6>
+                                                <hr>
+                                                <p>错误信息: ${e.message}</p>
+                                                <pre class="mt-2">${aiVerification.ai_analysis.analysis.raw_text}</pre>
+                                            </div>
+                                        `;
+                                    }
+                                })() : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    accordion.appendChild(fileCard);
+                });
+                
+                resultsDiv.appendChild(accordion);
             }
-        }
 
-        function displayProjectResults(results) {
-            const resultsDiv = document.getElementById('results');
-            const accordion = document.getElementById('auditResults');
-            accordion.innerHTML = '';
-            
-            Object.entries(results).forEach(([filePath, result], index) => {
-                const card = document.createElement('div');
-                card.className = 'card mb-3';
-                const headerId = `heading${index}`;
-                const collapseId = `collapse${index}`;
-                
-                // 格式化漏洞信息
-                const vulnerabilitiesHtml = result.vulnerabilities.length > 0 
-                    ? result.vulnerabilities.map(vuln => `
-                        <div class="vulnerability-item mb-3 p-3 border rounded">
-                            <h6 class="text-danger">${vuln.type}</h6>
-                            <p><strong>位置：</strong>${vuln.location}</p>
-                            <p><strong>严重程度：</strong>${vuln.severity}</p>
-                            <p><strong>描述：</strong>${vuln.description}</p>
-                            <p><strong>影响：</strong>${vuln.impact}</p>
-                            <p><strong>修复建议：</strong>${vuln.fix}</p>
-                            <p><strong>相关上下文：</strong>${vuln.related_context}</p>
-                        </div>
-                    `).join('')
-                    : '<p class="text-muted">未发现漏洞</p>';
-
-                // 格式化相关文件
-                const relatedFilesHtml = result.related_files.length > 0
-                    ? `<ul class="list-group">
-                        ${result.related_files.map(file => 
-                            `<li class="list-group-item">${file}</li>`
-                        ).join('')}
-                       </ul>`
-                    : '<p class="text-muted">无相关文件</p>';
-
-                card.innerHTML = `
-                    <div class="card-header" id="${headerId}">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link w-100 text-start" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#${collapseId}"
-                                    aria-expanded="false" aria-controls="${collapseId}">
-                                ${filePath}
-                            </button>
-                        </h5>
+            // 显示修复建议
+            if (result.recommendations?.length > 0) {
+                const recommendationsCard = document.createElement('div');
+                recommendationsCard.className = 'card mt-4';
+                recommendationsCard.innerHTML = `
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-tools"></i> 修复建议</h5>
                     </div>
-                    <div id="${collapseId}" class="collapse" 
-                         aria-labelledby="${headerId}" data-bs-parent="#auditResults">
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <h6 class="mb-3">漏洞分析</h6>
-                                <div class="vulnerabilities-container">
-                                    ${vulnerabilitiesHtml}
+                    <div class="card-body">
+                        <div class="list-group">
+                            ${result.recommendations.map(rec => `
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-2"></i>
+                                        <div>
+                                            <strong>${rec.file.split('\\').pop()}</strong>
+                                            <p class="mb-0 text-muted">${rec.recommendation}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-4">
-                                <h6 class="mb-3">上下文分析</h6>
-                                <pre class="rounded">${result.context_analysis}</pre>
-                            </div>
-                            <div>
-                                <h6 class="mb-3">相关文件</h6>
-                                <div class="related-files-container">
-                                    ${relatedFilesHtml}
-                                </div>
-                            </div>
+                            `).join('')}
                         </div>
                     </div>
                 `;
-                accordion.appendChild(card);
-            });
-            
-            resultsDiv.style.display = 'block';
-            
-            // 自动展开第一个结果
-            const firstCollapse = accordion.querySelector('.collapse');
-            if (firstCollapse) {
-                new bootstrap.Collapse(firstCollapse, { show: true });
+                resultsDiv.appendChild(recommendationsCard);
             }
         }
 
@@ -916,6 +1049,18 @@
                 themeIcon.className = 'bi bi-moon-fill';
             }
         }
+
+        // 添加项目类型切换监听
+        document.getElementById('projectType').addEventListener('change', function() {
+            const uploadType = document.getElementById('uploadType').value;
+            if (uploadType === 'folder') {
+                const folderInput = document.getElementById('codeFolder');
+                if (folderInput.files && folderInput.files.length > 0) {
+                    // 重新扫描已选择的文件
+                    updateFileList(folderInput.files, 'folderFileList');
+                }
+            }
+        });
     </script>
 
     <!-- 添加JSZip库 -->
