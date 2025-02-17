@@ -15,8 +15,8 @@ class LogLevel(str, Enum):
 class Settings(BaseSettings):
     # API配置
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_API_BASE: str = os.getenv("OPENAI_API_BASE", "https://api.siliconflow.cn/v1")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "01-ai/Yi-1.5-34B-Chat-16K")
+    OPENAI_API_BASE: str = os.getenv("OPENAI_API_BASE", "")
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "")
     
     # 日志配置
     LOG_LEVEL: LogLevel = os.getenv("LOG_LEVEL", LogLevel.INFO)
