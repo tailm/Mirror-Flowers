@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: mirror-flowers
+Version: 1.0.0
+Summary: AI-driven Code Security Audit Tool
+Home-page: https://github.com/Ky0toFu/Mirror-Flowers
+Author: Ky0toFu
+Author-email: 
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Security
+Requires-Python: >=3.8
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: python-multipart
+Requires-Dist: aiofiles
+Requires-Dist: httpx
+Requires-Dist: openai
+Requires-Dist: chromadb
+Requires-Dist: sentence-transformers
+Requires-Dist: pydantic
+Requires-Dist: pydantic-settings
+Requires-Dist: python-dotenv
+Requires-Dist: langchain
+Requires-Dist: langchain-community
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"

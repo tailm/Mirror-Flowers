@@ -1,0 +1,51 @@
+2025-02-20 15:23:16,243 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/
+2025-02-20 15:23:16,244 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:23:16,521 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/favicon.ico
+2025-02-20 15:23:16,522 - backend.app - INFO - 响应状态码: 404
+2025-02-20 15:23:53,662 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/ui
+2025-02-20 15:23:53,667 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:23:53,683 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/static/styles.css
+2025-02-20 15:23:53,684 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:23:54,337 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/api/models
+2025-02-20 15:23:54,342 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 15:23:54,669 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:23:54,670 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 404
+2025-02-20 15:23:54,939 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:23:54,940 - backend.app - ERROR - 从API获取模型列表失败: Error code: 404
+2025-02-20 15:23:54,941 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:27:33,016 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/api/models
+2025-02-20 15:27:33,020 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 15:27:33,285 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:27:33,287 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 404
+2025-02-20 15:27:33,530 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:27:33,532 - backend.app - ERROR - 从API获取模型列表失败: Error code: 404
+2025-02-20 15:27:33,532 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:28:21,782 - backend.app - INFO - 收到请求: POST http://127.0.0.1:8000/api/configure
+2025-02-20 15:28:21,785 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 15:28:22,052 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:28:22,052 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 404
+2025-02-20 15:28:22,323 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/chat/completions/v1/models "HTTP/1.1 404 Not Found"
+2025-02-20 15:28:22,325 - backend.services - ERROR - API配置验证失败: Error code: 404
+2025-02-20 15:28:22,325 - backend.services - ERROR - 配置 OpenAI API 失败: API配置无效: Error code: 404
+2025-02-20 15:28:22,325 - backend.app - ERROR - 配置更新失败: API配置无效: Error code: 404
+2025-02-20 15:28:22,326 - backend.app - INFO - 响应状态码: 400
+2025-02-20 15:46:07,884 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/ui
+2025-02-20 15:46:07,888 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:46:07,906 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/static/styles.css
+2025-02-20 15:46:07,908 - backend.app - INFO - 响应状态码: 304
+2025-02-20 15:46:08,024 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/api/models
+2025-02-20 15:46:08,025 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 15:46:08,418 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 200 OK"
+2025-02-20 15:46:08,725 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 200 OK"
+2025-02-20 15:46:08,727 - backend.app - INFO - 当前API地址: https://api.deepseek.com/v1
+2025-02-20 15:46:08,727 - backend.app - INFO - 可用模型: {'Chat': ['deepseek-chat', 'deepseek-reasoner'], 'Image': [], 'Audio': [], 'Embedding': []}
+2025-02-20 15:46:08,727 - backend.app - INFO - 当前使用的模型: deepseek-chat
+2025-02-20 15:46:08,728 - backend.app - INFO - 响应状态码: 200
+2025-02-20 15:46:52,700 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/api/models
+2025-02-20 15:46:52,702 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 15:46:53,020 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 200 OK"
+2025-02-20 15:46:53,274 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 200 OK"
+2025-02-20 15:46:53,277 - backend.app - INFO - 当前API地址: https://api.deepseek.com/v1
+2025-02-20 15:46:53,277 - backend.app - INFO - 可用模型: {'Chat': ['deepseek-chat', 'deepseek-reasoner'], 'Image': [], 'Audio': [], 'Embedding': []}
+2025-02-20 15:46:53,277 - backend.app - INFO - 当前使用的模型: deepseek-chat
+2025-02-20 15:46:53,278 - backend.app - INFO - 响应状态码: 200

@@ -13,6 +13,11 @@ chromadb>=0.4.0
 sentence-transformers>=2.2.0
 langchain>=0.1.0
 langchain-community>=0.0.10
+langchain_chroma>=0.2.2
+langchain_huggingface>=0.1.2
+phply>=1.2.6
+ply>=3.11
+esprima>=4.0.1
 
 # Data Validation & Settings
 pydantic>=2.0.0

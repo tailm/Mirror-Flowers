@@ -1,0 +1,8 @@
+README.md
+setup.py
+mirror_flowers.egg-info/PKG-INFO
+mirror_flowers.egg-info/SOURCES.txt
+mirror_flowers.egg-info/dependency_links.txt
+mirror_flowers.egg-info/requires.txt
+mirror_flowers.egg-info/top_level.txt
+tests/test_analyzers.py
