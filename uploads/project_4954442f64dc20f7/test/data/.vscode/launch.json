@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "(lldb) 启动",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "输入程序名称，例如 ${workspaceFolder}/a.out",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/zwj/test/data",
+      "program": "/Users/zwj/test/data/build/Debug/outDebug"
+    }
+  ]
+}

@@ -49,3 +49,39 @@
 2025-02-20 15:46:53,277 - backend.app - INFO - 可用模型: {'Chat': ['deepseek-chat', 'deepseek-reasoner'], 'Image': [], 'Audio': [], 'Embedding': []}
 2025-02-20 15:46:53,277 - backend.app - INFO - 当前使用的模型: deepseek-chat
 2025-02-20 15:46:53,278 - backend.app - INFO - 响应状态码: 200
+2025-02-20 16:16:42,361 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/ui
+2025-02-20 16:16:42,364 - backend.app - INFO - 响应状态码: 200
+2025-02-20 16:16:42,383 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/static/styles.css
+2025-02-20 16:16:42,386 - backend.app - INFO - 响应状态码: 304
+2025-02-20 16:16:42,517 - backend.app - INFO - 收到请求: GET http://127.0.0.1:8000/api/models
+2025-02-20 16:16:42,519 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 16:16:42,889 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 401 Unauthorized"
+2025-02-20 16:16:42,893 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 401 - {'error': {'message': 'Authentication Fails (no such user)', 'type': 'authentication_error', 'param': None, 'code': 'invalid_request_error'}}
+2025-02-20 16:16:43,370 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 401 Unauthorized"
+2025-02-20 16:16:43,371 - backend.app - ERROR - 从API获取模型列表失败: Error code: 401 - {'error': {'message': 'Authentication Fails (no such user)', 'type': 'authentication_error', 'param': None, 'code': 'invalid_request_error'}}
+2025-02-20 16:16:43,371 - backend.app - INFO - 响应状态码: 200
+2025-02-20 16:24:53,121 - backend.app - INFO - 收到请求: POST http://127.0.0.1:8000/api/audit/project
+2025-02-20 16:24:53,124 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 16:24:53,427 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 401 Unauthorized"
+2025-02-20 16:24:53,429 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 401 - {'error': {'message': 'Authentication Fails (no such user)', 'type': 'authentication_error', 'param': None, 'code': 'invalid_request_error'}}
+2025-02-20 16:24:53,440 - backend.services - INFO - 已加载保存的配置，使用模型: deepseek-chat
+2025-02-20 16:24:53,720 - httpx - INFO - HTTP Request: GET https://api.deepseek.com/v1/models "HTTP/1.1 401 Unauthorized"
+2025-02-20 16:24:53,720 - backend.services - WARNING - API验证失败，使用默认配置: Error code: 401 - {'error': {'message': 'Authentication Fails (no such user)', 'type': 'authentication_error', 'param': None, 'code': 'invalid_request_error'}}
+2025-02-20 16:25:40,181 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: mps
+2025-02-20 16:25:40,181 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-02-20 16:26:07,947 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-02-20 16:26:08,643 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: mps
+2025-02-20 16:26:08,643 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-02-20 16:26:12,064 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-02-20 16:26:12,068 - backend.services - INFO - 检测到项目类型: python
+2025-02-20 16:26:12,068 - backend.services - INFO - 检测到项目类型: python
+2025-02-20 16:26:12,068 - backend.services - INFO - 开始静态扫描...
+2025-02-20 16:26:12,068 - core.analyzers.core_analyzer - INFO - 找到 4 个待分析文件
+2025-02-20 16:26:12,068 - core.analyzers.core_analyzer - WARNING - 文件内容为空: /Users/zwj/Mirror-Flowers/uploads/project_4954442f64dc20f7/test/age.py
+2025-02-20 16:26:12,068 - core.analyzers.core_analyzer - WARNING - 无法读取文件内容: /Users/zwj/Mirror-Flowers/uploads/project_4954442f64dc20f7/test/age.py
+2025-02-20 16:26:12,069 - core.analyzers.core_analyzer - WARNING - 文件内容为空: /Users/zwj/Mirror-Flowers/uploads/project_4954442f64dc20f7/test/a.py
+2025-02-20 16:26:12,069 - core.analyzers.core_analyzer - WARNING - 无法读取文件内容: /Users/zwj/Mirror-Flowers/uploads/project_4954442f64dc20f7/test/a.py
+2025-02-20 16:26:12,069 - core.analyzers.core_analyzer - INFO - 扫描完成，发现 0 个可疑文件
+2025-02-20 16:26:12,069 - backend.services - INFO - 未发现可疑代码
+2025-02-20 16:26:12,070 - backend.services - INFO - 找到 0 个有效的源代码文件
+2025-02-20 16:26:12,090 - backend.app - INFO - 响应状态码: 200
